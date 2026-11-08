@@ -18,6 +18,8 @@
             user-select: none;
             font-size: 17px;
             line-height: 1.3;
+            /* Забороняємо мобільним браузерам робити подвійний тап для зуму */
+            touch-action: manipulation;
         }
 
         .app-container {
@@ -228,6 +230,7 @@
             font-weight: bold;
             cursor: pointer;
             user-select: none;
+            touch-action: manipulation;
             transition: background 0.1s, transform 0.05s;
         }
 
@@ -250,6 +253,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
             box-shadow: 0 4px 14px rgba(255, 215, 0, 0.35);
             transition: background 0.1s, transform 0.05s;
         }
