@@ -18,7 +18,6 @@
             user-select: none;
             font-size: 17px;
             line-height: 1.3;
-            /* Повертаємо можливість прокрутки сторінки */
             touch-action: pan-y;
         }
 
@@ -234,7 +233,6 @@
             font-weight: bold;
             cursor: pointer;
             user-select: none;
-            /* Забороняємо браузеру зумити сторінку при тапах на кнопки, але залишаємо скрол */
             touch-action: manipulation;
             transition: background 0.1s, transform 0.05s;
         }
@@ -277,13 +275,38 @@
             color: #8b949e;
             margin-top: 12px;
         }
+
+        /* Спливаюче вікно для швидкого показу фотографії */
+        #flash-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #flash-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 25px #ffd700;
+        }
     </style>
 </head>
 <body>
 
+<!-- Елемент для показу фотографії на 2 рівні -->
+<div id="flash-overlay">
+    <img src="flash.jpg" alt="Рівень 2">
+</div>
+
 <div class="app-container">
     <div class="header-top">
-        <div class="title">Графік відключень на 8 листопада 2026</div>
+        <div class="title" id="game-title">Графік відключень</div>
     </div>
 
     <!-- Статистика -->
@@ -329,6 +352,15 @@
 </div>
 
 <script>
+    // Автоматичне оновлення дати у реальному часі
+    function updateRealTimeDate() {
+        const now = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedDate = now.toLocaleDateString('uk-UA', options);
+        document.getElementById('game-title').innerText = `Графік відключень на ${formattedDate}`;
+    }
+    updateRealTimeDate();
+
     const ROWS = 24;
     const COLS = 10;
     
@@ -345,6 +377,7 @@
     let score = 0;
     let clearedRowsTotal = 0;
     let level = 1;
+    let level2Shown = false; // Змінна для контролю показу фото на 2 рівні
 
     const SHAPES = [
         [[0,1,0],[1,1,1],[0,0,0]], // T
@@ -442,6 +475,7 @@
         score = 0;
         clearedRowsTotal = 0;
         level = 1;
+        level2Shown = false; // Скидаємо при рестарті гри
         updateStats();
         nextPieceMatrix = getRandomPiece();
         resetPlayer();
@@ -516,6 +550,16 @@
         document.getElementById('score').innerText = score;
         document.getElementById('rows').innerText = clearedRowsTotal;
         document.getElementById('level').innerText = level;
+
+        // Показ фото на 2 рівні (зникає через 500 мілісекунд)
+        if (level >= 2 && !level2Shown) {
+            level2Shown = true;
+            const overlay = document.getElementById('flash-overlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+        }
     }
 
     function rotateMatrix(matrix) {
