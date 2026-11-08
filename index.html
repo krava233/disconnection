@@ -190,7 +190,7 @@
             position: relative;
         }
 
-        /* Активна фігурка */
+        /* Активна фігурка з плавною анімацією переміщення */
         .cell.active {
             background-color: #ffd700;
             border: 0.5px solid #ffd700;
@@ -200,6 +200,7 @@
             background-size: 17px 17px;
             z-index: 2;
             position: relative;
+            transition: transform 0.08s ease-out, background-color 0.08s ease-out;
         }
 
         /* Велика панель керування з напівпрозорими кнопками */
@@ -218,17 +219,17 @@
         }
 
         .ctrl-btn {
-            background: rgba(33, 45, 66, 0.55); /* Напівпрозорий фон */
+            background: rgba(33, 45, 66, 0.55);
             border: 1.5px solid rgba(139, 148, 158, 0.6);
             backdrop-filter: blur(4px);
             color: #fff;
             flex: 1;
-            height: 64px; /* Збільшена висота */
+            height: 64px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px; /* Збільшений іконковий шрифт */
+            font-size: 22px;
             font-weight: bold;
             cursor: pointer;
             user-select: none;
@@ -243,11 +244,11 @@
 
         /* Велика напівпрозора кнопка повного опускання */
         .drop-btn {
-            background: rgba(255, 215, 0, 0.45); /* Напівпрозорий жовтий */
+            background: rgba(255, 215, 0, 0.45);
             color: #ffffff;
             border: 1.5px solid rgba(255, 215, 0, 0.8);
             backdrop-filter: blur(4px);
-            width: 72px; /* Збільшений розмір */
+            width: 72px;
             height: 64px;
             border-radius: 16px;
             font-size: 26px;
@@ -310,7 +311,7 @@
         <div id="game-grid"></div>
     </div>
 
-    <!-- Екранні кнопки керування (великі та напівпрозорі) -->
+    <!-- Екранні кнопки керування -->
     <div class="controls-bar">
         <div class="control-group">
             <button class="ctrl-btn" id="btn-rotate" title="Поворот">🔄</button>
