@@ -544,7 +544,8 @@
                 if (m[r][c] !== 0) {
                     let newX = o.x + c;
                     let newY = o.y + r;
-                    if (newX < 0 || newX >= COLS || newY >= ROWS) return true;
+                    if (newX < 0 || newX >= COLS) return true;
+                    if (newY >= ROWS) return true;
                     if (newY >= 0 && arena[newY][newX] !== 0) return true;
                 }
             }
@@ -580,7 +581,7 @@
                 arena.splice(r, 1);
                 arena.unshift(Array(COLS).fill(0));
                 rowCount++;
-                r++; // перевірити цей же рядок знову після зміщення
+                r++; // Перевірити цей же рядок знову після зміщення
             }
         }
 
