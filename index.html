@@ -325,9 +325,34 @@
             transform: scale(0.95);
             background: #e6c200;
         }
+
+        /* Спливаюче вікно для фотографії на 2 рівні */
+        #flash-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #flash-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 25px #ffd700;
+        }
     </style>
 </head>
 <body>
+
+<!-- Спливаюче вікно для фотографії на 2 рівні (розкоментуйте та вкажіть шлях до файлу в src) -->
+<div id="flash-overlay">
+    <img src="flash.jpg" alt="Рівень 2">
+</div>
 
 <div class="app-container">
     <!-- Екран Game Over -->
@@ -409,6 +434,7 @@
     let score = 0;
     let clearedRowsTotal = 0;
     let level = 1;
+    let level2Shown = false; // Змінна для показу фото на 2 рівні
     let isGameOver = false;
     let isSoftDropping = false;
 
@@ -515,6 +541,7 @@
         score = 0;
         clearedRowsTotal = 0;
         level = 1;
+        level2Shown = false;
         isGameOver = false;
         isSoftDropping = false;
         document.getElementById('game-over-modal').style.display = 'none';
@@ -581,7 +608,7 @@
                 arena.splice(r, 1);
                 arena.unshift(Array(COLS).fill(0));
                 rowCount++;
-                r++; // Перевірити цей же рядок знову після зміщення
+                r++; 
             }
         }
 
@@ -597,6 +624,18 @@
         document.getElementById('score').innerText = score;
         document.getElementById('rows').innerText = clearedRowsTotal;
         document.getElementById('level').innerText = level;
+
+        // Логіка показу фото при досягненні 2 рівня (якщо розкоментовано блок вище)
+        if (level >= 2 && !level2Shown) {
+            level2Shown = true;
+            const overlay = document.getElementById('flash-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 1500); // Час показу фото в мілісекундах (1.5 секунди)
+            }
+        }
     }
 
     function rotateMatrix(matrix) {
@@ -696,7 +735,7 @@
         requestAnimationFrame(gameLoop);
     }
 
-    // Керування клавіатурою (із захистом від прокручування сторінки)
+    // Керування клавіатурою
     document.addEventListener('keydown', event => {
         if (isGameOver) return;
         if (event.key === 'ArrowLeft') {
